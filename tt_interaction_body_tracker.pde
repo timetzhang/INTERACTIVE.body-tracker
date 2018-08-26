@@ -26,20 +26,18 @@ class Circle {
   }
 
   void update() {
-    pos.x += random(-0.3, 0.3);
-    pos.y += random(-0.3, 0.3);
+    pos = startPos;
     strokeColor = color(random(255), random(255), random(255));
     fillColor = color(random(255), random(255), random(255));
     lifeSpan = 255;
   }
 
   void reset() {
-    pos.x += random(-6, 6);
-    pos.y += random(-6, 6);
-    lifeSpan-=3;
-    strokeColor = color(strokeColor,lifeSpan);
-    fillColor = color(fillColor,lifeSpan);
-    
+    pos.x += random(-0.05, 0.05);
+    pos.y += random(-0.05, 0.05);
+    lifeSpan-=0.5;
+    strokeColor = color(strokeColor, lifeSpan);
+    fillColor = color(fillColor, lifeSpan);
     pos = startPos;
   }
 
@@ -50,7 +48,7 @@ class Circle {
   }
 }
 
-Circle[][] circles = new Circle[100][200];
+Circle[][] circles = new Circle[300][300];
 
 void setup() {
   fullScreen(P3D);
