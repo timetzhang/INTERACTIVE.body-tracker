@@ -1,58 +1,19 @@
 import KinectPV2.*;
-import processing.sound.*;
+import processing.video.*;
 
 KinectPV2 kinect;
-SoundFile soundKick;
-SoundFile soundSnare;
+Movie movie;
 
 boolean foundUsers = false;
-
-class Circle {
-  PVector pos;
-  PVector startPos;
-  color strokeColor;
-  color fillColor;
-  int lifeSpan;
-  float radius;
-
-  Circle(float x, float y) {
-    pos = new PVector(x, y);
-    startPos  = new PVector(x, y);
-    strokeColor = color(120, 30);
-    fillColor = color(120, 10);
-    lifeSpan = 255;
-    radius = 10;
-    noFill();
-  }
-
-  void update() {
-    pos = startPos;
-    strokeColor = color(random(255), random(255), random(255));
-    fillColor = color(random(255), random(255), random(255));
-    lifeSpan = 255;
-  }
-
-  void reset() {
-    pos.x += random(-0.05, 0.05);
-    pos.y += random(-0.05, 0.05);
-    lifeSpan-=0.5;
-    strokeColor = color(strokeColor, lifeSpan);
-    fillColor = color(fillColor, lifeSpan);
-    pos = startPos;
-  }
-
-  void display() {
-    fill(fillColor);
-    stroke(strokeColor);
-    rect(pos.x, pos.y, radius, radius);
-  }
-}
 
 Circle[][] circles = new Circle[300][300];
 
 void setup() {
-  fullScreen(P3D);
+  fullScreen(P2D);
   background(0);
+  
+  movie = new Movie(this, "45.mp4");
+  movie.loop();
 
   //init kinect
   kinect = new KinectPV2(this);
@@ -60,9 +21,6 @@ void setup() {
   kinect.enableDepthMaskImg(true);
   kinect.init();
 
-  //Init sound files
-  soundKick = new SoundFile(this, "./kick.wav");
-  soundSnare = new SoundFile(this, "./snare.wav");
 
   noFill();
 
@@ -76,6 +34,7 @@ void setup() {
 
 void draw() {
   background(0);
+  image(movie, 0, 0, width, height);
   PImage myImage = kinect.getBodyTrackImage();
   myImage.loadPixels();
 
@@ -94,4 +53,8 @@ void draw() {
 
 void mousePressed() {
   println(frameRate);
+}
+
+void movieEvent(Movie m) {
+  m.read();
 }
